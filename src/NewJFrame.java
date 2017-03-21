@@ -1,3 +1,7 @@
+
+import java.text.SimpleDateFormat;
+import javax.swing.JOptionPane;
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -69,6 +73,12 @@ public class NewJFrame extends javax.swing.JFrame {
         jLabel2.setText("Nama Peminjam");
         jPanel2.add(jLabel2);
         jLabel2.setBounds(10, 11, 96, 15);
+
+        namaPeminjam.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                namaPeminjamActionPerformed(evt);
+            }
+        });
         jPanel2.add(namaPeminjam);
         namaPeminjam.setBounds(10, 30, 170, 30);
 
@@ -171,9 +181,29 @@ public class NewJFrame extends javax.swing.JFrame {
 
     private void btnSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveActionPerformed
         // TODO add your handling code here:
-        if("".equals(namaPeminjam.getText()) || "".equals(alamatPeminjam.getText()) ||
-                "".equals(noStruk.getText()) || "".equals(noPol.getText()))
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        String pinjam = dateFormat.format(tPinjam.getDate());
+        String kembali = dateFormat.format(tKembali.getDate());
+        
+       
+        if("".equals(tNama.getText()) || "".equals(tAlamat.getText()) || "".equals(tStruk.getText()) || pinjam.equals("") || kembali.equals("") || "".equals(tPol.getText()) ||  "".equals(tHarga.getText())   ){
+            JOptionPane.showMessageDialog(this, "Harap Lengkapi Data", "Error", JOptionPane.WARNING_MESSAGE);
+        } else {
+
+            String SQL = "INSERT INTO data VALUES ('"+namaPeminjam.getText()+"','"+alamatPeminjam.getText()+"','"+noStruk.getText()+"','"+"','"+"','"+noPol.getText()+"','"+pinjam+"','"+kembali+"','"+harga.getText()+"')";
+            int status = KoneksiDB.execute(SQL);
+            if(status == 1){
+                JOptionPane.showMessageDialog(this, "Data berhasil ditambahkan", "Sukses", JOptionPane.INFORMATION_MESSAGE);
+                selectData();
+            } else {
+                JOptionPane.showMessageDialog(this, "Data gagal ditambahkan", "Gagal", JOptionPane.WARNING_MESSAGE);
+            }
+        }
     }//GEN-LAST:event_btnSaveActionPerformed
+
+    private void namaPeminjamActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_namaPeminjamActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_namaPeminjamActionPerformed
 
     /**
      * @param args the command line arguments
